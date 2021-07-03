@@ -47,8 +47,13 @@ app.use(
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader(
+      'Access-Control-Allow-Methods',
+      'PUT, GET, POST, DELETE, OPTIONS , PATCH');
+  res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With,Content-Type, Authorization',
+  );
   next();
 });
 
@@ -73,7 +78,10 @@ mongoose.set('useUnifiedTopology', true);
 // mongoose.connect(MONGODB_URI)
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
     .then((result)=>{
-      app.listen(port, hostname, () => {
+      const server = app.listen(port);
+      const io = require('./socket').init(server);
+      console.log(`Server starting at http://${hostname}:${port}/`);
+      io.on('connection', (socket)=>{
         console.log(`Server running at http://${hostname}:${port}/`);
       });
     })

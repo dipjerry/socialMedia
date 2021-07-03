@@ -18,5 +18,18 @@ router.put('/post/:postId', [
 ], isAuth, feedController.updatePost);
 
 router.delete('/post/:postId', isAuth, feedController.deletePost);
+router.get('/status', isAuth, feedController.getUserStatus);
+router.patch(
+    '/status',
+    isAuth,
+    [
+      body('status')
+          .trim()
+          .not()
+          .isEmpty(),
+    ],
+    feedController.updateUserStatus,
+);
+
 
 module.exports = router;
