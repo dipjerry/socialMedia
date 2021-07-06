@@ -141,7 +141,6 @@ exports.updatePost= async (req, res, next)=>{
   const title = req.body.title;
   const content = req.body.content;
   let imageUrl = req.body.image;
-  console.log('imageUrl');
   console.log(imageUrl);
   if (req.file) {
     imageUrl = req.file.path.replace(/\\/g, '/');
@@ -159,8 +158,6 @@ exports.updatePost= async (req, res, next)=>{
       error.statusCode = 404;
       throw error;
     }
-    console.log('post.creator');
-    console.log(post.creator);
     if (post.creator._id.toString() !== req.userId) {
       const error = new Error('Not Auithorization');
       error.statusCode = 403;
